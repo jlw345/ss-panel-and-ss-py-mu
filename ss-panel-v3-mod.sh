@@ -51,9 +51,9 @@ Libtest(){
 	echo "$LIB_PING $LIB" >> ping.pl
 	libAddr=`sort -V ping.pl|sed -n '1p'|awk '{print $2}'`
 	if [ "$libAddr" == "$GIT" ];then
-		libAddr='https://raw.githubusercontent.com/jlw345/ss-panel-and-ss-py-mu/master/libsodium-1.0.13.tar.gz'
+		libAddr='https://raw.githubusercontent.com/jlw345/ss-panel-and-ss-py-mu/master/libsodium-1.0.17.tar.gz'
 	else
-		libAddr='https://download.libsodium.org/libsodium/releases/libsodium-1.0.13.tar.gz'
+		libAddr='https://download.libsodium.org/libsodium/releases/libsodium-1.0.17.tar.gz'
 	fi
 	rm -f ping.pl		
 }
@@ -131,14 +131,16 @@ install_centos_ssr(){
     easy_install supervisor
     supervisord
 	fi
-	pip install --upgrade pip
+	python -m pip install --upgrade --force pip
+	pip install setuptools==33.1.1
 	Libtest
 	wget --no-check-certificate $libAddr
-	tar xf libsodium-1.0.13.tar.gz && cd libsodium-1.0.13
+	tar xf libsodium-1.0.17.tar.gz && cd libsodium-1.0.17
 	./configure && make -j2 && make install
 	echo /usr/local/lib > /etc/ld.so.conf.d/usr_local_lib.conf
 	ldconfig
-	git clone -b manyuser https://github.com/jlw345/shadowsocks.git "/root/shadowsocks"
+	wget -P /root "https://raw.githubusercontent.com/jlw345/ss-panel-and-ss-py-mu/master/shadowsocks.zip"
+	unzip /root/shadowsocks.zip -d /root
 	cd /root/shadowsocks
 	chkconfig supervisord on
 	#第一次安装
@@ -185,7 +187,8 @@ install_ubuntu_ssr(){
 	apt-get install python-pip git -y
 	pip install cymysql
 	cd /root
-	git clone -b manyuser https://github.com/jlw345/shadowsocks.git "/root/shadowsocks"
+	wget -P /root "https://raw.githubusercontent.com/qinghuas/ss-panel-and-ss-py-mu/master/shadowsocks.zip"
+	unzip /root/shadowsocks.zip -d /root
 	cd shadowsocks
 	pip install -r requirements.txt
 	chmod +x *.sh
@@ -262,7 +265,7 @@ install_node(){
 	echo "/usr/bin/supervisord -c /etc/supervisord.conf" >> /etc/rc.local
 	chmod +x /etc/rc.d/rc.local
 	echo "#############################################################"
-	echo "# 安装完成，节点即将重启使配置生效                          #"
+	echo "# 安装完成，节点即将重启使配置生效                             #"
 	echo "# Github: https://github.com/mmmwhy/ss-panel-and-ss-py-mu   #"
 	echo "# Author: 91vps                                             #"
 	echo "#############################################################"
@@ -344,9 +347,9 @@ install_node_db(){
 	echo "/usr/bin/supervisord -c /etc/supervisord.conf" >> /etc/rc.local
 	chmod +x /etc/rc.d/rc.local
 	echo "#############################################################"
-	echo "# 安装完成，节点即将重启使配置生效                          #"
-	echo "# Github: https://github.com/mmmwhy/ss-panel-and-ss-py-mu   #"
-	echo "# Author: 91vps                                             #"
+	echo "# 安装完成，节点即将重启使配置生效                              #"
+	echo "# Github: https://github.com/mmmwhy/ss-panel-and-ss-py-mu    #"
+	echo "# Author: 91vps                                              #"
 	echo "#############################################################"
 	reboot now
 }
@@ -374,24 +377,24 @@ install_panel_and_node(){
 	echo "/usr/bin/supervisord -c /etc/supervisord.conf" >> /etc/rc.local
 	chmod +x /etc/rc.d/rc.local
 	echo "#############################################################"
-	echo "# 安装完成，登录http://${IPAddress}看看吧~                   #"
+	echo "# 安装完成，登录http://${IPAddress}看看吧~                    #"
 	echo "# 用户名: 91vps 密码: 91vps                                  #"
-	echo "# phpmyadmin：http://${IPAddress}:888  用户名密码均为：root  #"
-	echo "# 安装完成，节点即将重启使配置生效                           #"
-	echo "# Github: https://github.com/mmmwhy/ss-panel-and-ss-py-mu    #"
-	echo "#############################################################"
+	echo "# phpmyadmin：http://${IPAddress}:888  用户名密码均为：root   #"
+	echo "# 安装完成，节点即将重启使配置生效                             #"
+	echo "# Github: https://github.com/mmmwhy/ss-panel-and-ss-py-mu   #"
+	echo "##############################################################"
 	reboot now
 }
 echo
-echo "#############################################################"
-echo "# One click Install SS-panel and Shadowsocks-Py-Mu          #"
-echo "# Github: https://github.com/mmmwhy/ss-panel-and-ss-py-mu   #"
-echo "# Author: 91vps                                             #"
-echo "# Please choose the server you want                         #"
-echo "# 1  SS-V3_mod_panel and node One click Install             #"
-echo "# 2  SS-node modwebapi One click Install                    #"
-echo "# 3  SS-node Database  One click Install                    #"
-echo "#############################################################"
+echo "####################################################################"
+echo "# One click Install SS-panel and Shadowsocks-Py-Mu                  #"
+echo "# Github: https://github.com/mmmwhy/ss-panel-and-ss-py-mu           #"
+echo "# Author: 91vps                                                     #"
+echo "# Please choose the server you want                                 #"
+echo "# 1  SS-V3_mod_panel and node One click Install（前端+后端一键安装）  #"
+echo "# 2  SS-node modwebapi One click Install（后端节点modwebapi对接模式） #"
+echo "# 3  SS-node Database  One click Install（后端节点数据库对接模式）     #"
+echo "#####################################################################"
 echo
 num=$1
 if [ "${num}" == "1" ]; then
