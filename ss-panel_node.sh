@@ -33,10 +33,10 @@ install_ss_panel(){
 		fi
 	}
 	install_soft_for_each
-	wget -c https://raw.githubusercontent.com/mmmwhy/ss-panel-and-ss-py-mu/master/lnmp1.3.zip && unzip lnmp1.3.zip && cd lnmp1.3 && chmod +x install.sh && ./install.sh lnmp
+	wget -c https://raw.githubusercontent.com/jlw345/ss-panel-and-ss-py-mu/master/lnmp1.4.zip && unzip lnmp1.4.zip && cd lnmp1.4 && chmod +x install.sh && ./install.sh lnmp
 	chattr -i /home/wwwroot/default/.user.ini
 	rm -rf /home/wwwroot/default
-	git clone https://github.com/mmmwhy/ss-panel.git "/home/wwwroot/default"
+	git clone https://github.com/jlw345/sspanel.git "/home/wwwroot/default"
 	cd /home/wwwroot/default
 	curl -sS https://install.phpcomposer.com/installer | php
 	chmod +x composer.phar
@@ -45,7 +45,7 @@ install_ss_panel(){
 	mysql -uroot -proot -e"create database ss;" 
 	mysql -uroot -proot -e"use ss;" 
 	mysql -uroot -proot ss < /home/wwwroot/default/db.sql
-	wget -N -P  /usr/local/nginx/conf/ --no-check-certificate https://raw.githubusercontent.com/mmmwhy/ss-panel-and-ss-py-mu/master/nginx.conf
+	wget -N -P  /usr/local/nginx/conf/ --no-check-certificate https://raw.githubusercontent.com/jlw345/ss-panel-and-ss-py-mu/master/nginx.conf
 	lnmp nginx restart
 }
 
@@ -89,12 +89,12 @@ install_ss_py_mu(){
 			echo "Will install below software on your centos system:"
 			yum install git lsof -y
 			yum -y install python-setuptools  
-			curl https://raw.githubusercontent.com/mmmwhy/ss-panel-and-ss-py-mu/master/get-pip.py -o get-pip.py
+			curl https://raw.githubusercontent.com/jlw345/ss-panel-and-ss-py-mu/master/get-pip.py -o get-pip.py
 			python get-pip.py
 			rm -rf python get-pip.py
 			yum -y groupinstall "Development Tools"
-			wget https://download.libsodium.org/libsodium/releases/libsodium-1.0.13.tar.gz
-			tar xf libsodium-1.0.13.tar.gz && cd libsodium-1.0.13
+			wget https://download.libsodium.org/libsodium/releases/libsodium-1.0.17.tar.gz
+			tar xf libsodium-1.0.17.tar.gz && cd libsodium-1.0.17
 			./configure && make -j2 && make install
 			echo /usr/local/lib > /etc/ld.so.conf.d/usr_local_lib.conf
 			ldconfig
@@ -105,8 +105,8 @@ install_ss_py_mu(){
 		apt-get install supervisor -y
 		apt-get install git -y
 		apt-get install build-essential -y
-		wget https://download.libsodium.org/libsodium/releases/libsodium-1.0.13.tar.gz
-		tar xf libsodium-1.0.13.tar.gz && cd libsodium-1.0.13
+		wget https://download.libsodium.org/libsodium/releases/libsodium-1.0.17.tar.gz
+		tar xf libsodium-1.0.17.tar.gz && cd libsodium-1.0.17
 		./configure && make -j2 && make install
 		echo /usr/local/lib > /etc/ld.so.conf.d/usr_local_lib.conf
 		ldconfig
@@ -114,7 +114,7 @@ install_ss_py_mu(){
 	}
 	install_soft_for_each
 	echo "Let's setup your ssnode/root"
-	git clone https://github.com/mmmwhy/shadowsocks-py-mu.git "/root/shadowsocks-py-mu"
+	git clone https://github.com/jlw345/shadowsocks-py-mu.git "/root/shadowsocks-py-mu"
 	#modify Config.py
 	echo -e "modify Config.py...\n"
 	Userdomain=${Userdomain:-"https://ss.91vps.club"}
@@ -193,7 +193,7 @@ one_click_all(){
 	}
 	install_soft_for_each
 	echo "Let's setup your ssnode/root"
-	git clone https://github.com/mmmwhy/shadowsocks-py-mu.git "/root/shadowsocks-py-mu"
+	git clone https://github.com/jlw345/shadowsocks-py-mu.git "/root/shadowsocks-py-mu"
 	#modify Config.py
 	echo -e "modify Config.py...\n"
 	sed -i "s#domain#${IPAddress}#" /root/shadowsocks-py-mu/shadowsocks/config.py
